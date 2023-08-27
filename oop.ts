@@ -41,18 +41,18 @@ class Rectangle extends Shape{
 
     combinationRectangle(rectangleA :Rectangle, rectangleB :Rectangle) : Rectangle {
         return new Rectangle (rectangleA.height + rectangleB.height,
-            rectangleA.width + rectangleB.width)
+            rectangleA.width + rectangleB.width);
     }
 }
 
 // Square extends Rectangle
 class Square extends Rectangle{
-    sideLength : number
+    sideLength : number;
     draw: string;
     
     constructor(sideLength : number ,draw: string = "drawing a Triangle") {
-        super(sideLength, sideLength) 
-        this.draw = draw       
+        super(sideLength, sideLength);
+        this.draw = draw;       
     }
 };
 
@@ -82,16 +82,6 @@ class Triangle extends Shape {
     draw: string;
 
     constructor (draw: string = "drawing a Triangle"){
-        super()
-        this.draw = draw;
-    };
-};
-
-// class SquareShaped extends Shape
-class SquareShaped  extends Shape {
-    draw: string;
-
-    constructor (draw: string = "drawing a Square"){
         super()
         this.draw = draw;
     };

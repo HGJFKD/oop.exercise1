@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
     "tsc-watch": "^6.0.4"
   }
 }
