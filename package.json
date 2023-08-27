@@ -1,0 +1,15 @@
+{
+  "name": "oop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "oop.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "startDev": "nodemon ./oop.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tsc-watch": "^6.0.4"
+  }
+}
