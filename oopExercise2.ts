@@ -4,10 +4,16 @@ import { log } from "console";
 class Person {
     firstName : String;
     lastName :String;
+    age : number;
+    address: string
 
-    constructor (firstName: String, lastName:String){
+    constructor (firstName: String, lastName:String,
+        age : number, address: string){
         this.firstName = firstName;
         this.lastName = lastName;
+        this.age = age;
+        this.address = address;
+
     };
 
     setInfo(){
@@ -16,26 +22,62 @@ class Person {
 };
 
 // class Patient extends Person
-class Patient extends Person {
+class Patient {
+    person : Person
     patientID :number;
+    phoneNumber : number;
+    emergencyContact : number;
+    medicalHistory: Appointment[]
 
-    constructor(firstName: String, lastName:String, patientID :number){
-        super(firstName, lastName);
-        this.patientID = patientID; 
+    constructor(person : Person, patientID : number,
+        phoneNumber : number, emergencyContact : number,
+        medicalHistory: Appointment[]){
+        this.person = person
+        this.patientID = patientID;
+        this.phoneNumber = phoneNumber;
+        this.emergencyContact = emergencyContact;
+        this.medicalHistory = medicalHistory;
     };
+
+    addMedicalHistory(appointment : Appointment) : void {
+        this.medicalHistory.push(appointment);
+    };
+
+};
+
+// MedicalStaff 
+class MedicalStaff extends Person {
+    person :Person;
+    staffID : number;
+    position : string;
+    department : string;
+
+    constructor (person: Person, staffID : number, position : string, department : string){
+        super(person.firstName, person.lastName ,person.age, person.address);
+        this.person = person
+        this.staffID = staffID;
+        this.position = position;
+        this.department = department;
+    };
+
 };
 
 // class Doctor extends Person
-class Doctor extends Person {
+class Doctor extends MedicalStaff {
+    medicalStaff: MedicalStaff;
     doctorID : number;
     specialization : string;
+    availability : number;
 
-    constructor (firstName: String, lastName:String, doctorID : number, specialization : string){
-        super(firstName, lastName);
+    constructor (medicalStaff: MedicalStaff, doctorID : number,
+        specialization : string, availability : number){
+        super(medicalStaff.person, medicalStaff.staffID ,medicalStaff.position,
+            medicalStaff.department);
         this.doctorID = doctorID;
         this.specialization = specialization;
-    }
-}
+        this.availability = availability;
+    };
+};
 
 // class Appointment
 class Appointment {
@@ -43,18 +85,22 @@ class Appointment {
     doctor : Doctor;
     date: Date = new Date();  
     time: number;
+    status : ("Planned" | "Completed" | "Cancelled");
 
-    constructor (patient : Patient, doctor : Doctor, date: Date = new Date(), time: number){
+    constructor (patient : Patient, doctor : Doctor, date: Date = new Date(),
+        time: number, status: ("Planned" | "Completed" | "Cancelled")){
         this.patient = patient;
         this.doctor = doctor;
         this.date = date
         this.time = time;
+        this.status = status;
     }
 
     setInfo(){
         return this;
     };
 };
+
 
 // class Hospital
 class Hospital {
@@ -114,26 +160,51 @@ class Hospital {
     };
 };
 
+// Persons
+const moshe = new Person("moshe","moshe", 25, "Jerusalem");
+const chaim = new Person ("chaim","chaim",23, "Sefat");
+const israel = new Person ("israel","israel",102, "Afula");
+const amitHaGever = new Person ("amitHaGever","amitHaGever",10, "BB");
+const natan = new Person ("natan","natan",55, "Tel-aviv");
+const miryam = new Person ("miryam","miryam",47, "Bat-yam");
+// Doctors
+const Gay = new Person ("gay","israel",800, "Tel-aviv");
+const Sharon = new Person ("sharon","hadar",801, "Afula");
+const Las = new Person ("Yoram","las",802, "Petach-Tikwa");
+
+// medicalHistoryS
+const mosheMedicalHistory : Appointment[] = []
+const chaimMedicalHistory : Appointment[] = []
+const israelMedicalHistory : Appointment[] = []
+const amitHaGeverMedicalHistory : Appointment[] = []
+const natanMedicalHistory : Appointment[] = []
+const miryamMedicalHistory : Appointment[] = []
+
 // Patients
-const moshe = new Patient ("moshe","moshe",100);
-const chaim = new Patient ("chaim","chaim",101);
-const israel = new Patient ("israel","israel",102);
-const amitHaGever = new Patient ("amitHaGever","amitHaGever",103);
-const natan = new Patient ("natan","natan",104);
-const miryam = new Patient ("miryam","miryam",105);
+const moshePat = new Patient (moshe, 101, 512345678, 5212422556,mosheMedicalHistory);
+const chaimPat = new Patient (chaim, 102, 5112345678, 521245456,chaimMedicalHistory);
+const israelPat = new Patient (israel, 103, 51234265678, 521424556,israelMedicalHistory);
+const amitHaGeverPat = new Patient (amitHaGever, 104, 5124345678, 52124556,amitHaGeverMedicalHistory);
+const natanPat = new Patient (natan, 105, 51234566678, 521244556,natanMedicalHistory);
+const miryamPat = new Patient (miryam, 106, 51234995678, 5212224556,miryamMedicalHistory);;
+
+// MedicalStaff
+const medicalStaff1 = new MedicalStaff (Gay, 120, "abc", "Otolaryngology");
+const medicalStaff2 = new MedicalStaff (Sharon, 121, "abvb", "Family");
+const medicalStaff3 = new MedicalStaff (Las, 122, "abcdff", "Corona");
 
 // Doctors
-const drGay = new Doctor ("gay","israel",800, "Otolaryngology");
-const drSharon = new Doctor ("sharon","hadar",801, "Family");
-const drLas = new Doctor ("Yoram","las",802, "Corona");
+const drGay = new Doctor (medicalStaff1 ,800, "Otolaryngology", 1000);
+const drSharon = new Doctor (medicalStaff2 ,801, "Family", 2000);
+const drLas = new Doctor (medicalStaff3 ,802, "Corona", 3000);
 
 // Appointments
-const appointment1 = new Appointment(moshe, drGay, new Date ("2023-08-27"), 25);
-const appointment2 = new Appointment(chaim, drGay, new Date ("2023-08-29"), 25);
-const appointment3 = new Appointment(israel, drSharon, new Date ("2023-07-27"), 25);
-const appointment4 = new Appointment(amitHaGever, drLas, new Date ("2023-08-25"), 25);
-const appointment5 = new Appointment(natan, drSharon, new Date ("2023-08-27"), 25);
-const appointment6 = new Appointment(miryam, drLas, new Date ("2023-08-29"), 25);
+const appointment1 = new Appointment(moshePat, drGay, new Date ("2023-08-27"), 25, "Completed");
+const appointment2 = new Appointment(chaimPat, drGay, new Date ("2023-08-29"), 25, "Completed");
+const appointment3 = new Appointment(israelPat, drSharon, new Date ("2023-07-27"), 25, "Planned");
+const appointment4 = new Appointment(amitHaGeverPat, drLas, new Date ("2023-08-25"), 25, "Completed");
+const appointment5 = new Appointment(natanPat, drSharon, new Date ("2023-08-27"), 25, "Planned");
+const appointment6 = new Appointment(miryamPat, drLas, new Date ("2023-08-29"), 25, "Cancelled");
 
 // Hospital === 
 const patients : Patient[] = [];
@@ -143,12 +214,12 @@ const hospitalName = "Zivft";
 const ZivftHospital = new Hospital (patients, doctors, appointments, hospitalName);
 
 // add Patient
-ZivftHospital.addPatient(moshe);
-ZivftHospital.addPatient(chaim);
-ZivftHospital.addPatient(israel);
-ZivftHospital.addPatient(amitHaGever);
-ZivftHospital.addPatient(natan);
-ZivftHospital.addPatient(miryam);
+ZivftHospital.addPatient(moshePat);
+ZivftHospital.addPatient(chaimPat);
+ZivftHospital.addPatient(israelPat);
+ZivftHospital.addPatient(amitHaGeverPat);
+ZivftHospital.addPatient(natanPat);
+ZivftHospital.addPatient(miryamPat);
 
 // add doctors
 ZivftHospital.addDoctor(drGay);
