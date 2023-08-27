@@ -48,9 +48,11 @@ class Rectangle extends Shape{
 // Square extends Rectangle
 class Square extends Rectangle{
     sideLength : number
+    draw: string;
     
-    constructor(sideLength : number) {
-        super(sideLength, sideLength)         
+    constructor(sideLength : number ,draw: string = "drawing a Triangle") {
+        super(sideLength, sideLength) 
+        this.draw = draw       
     }
 };
 
